@@ -3,7 +3,7 @@ from collections import defaultdict
 import string
 
 class RNNWordPredictor:
-    def __init__(self, hidden_size = 64, learning_rate = 0.01):
+    def __init__(self, hidden_size = 64, learning_rate = 0.05):
         self.hidden_size = hidden_size
         self.learning_rate = learning_rate
         self.word_to_index = {}
@@ -154,7 +154,7 @@ class RNNWordPredictor:
         return losses
 
 
-    def predict_next_word(self, context_words, temperature = 1.0):
+    def predict_next_word(self, context_words, temperature = 0.8):
         context_indices = []
         for word in context_words:
             if word in self.word_to_index:
@@ -189,12 +189,9 @@ class RNNWordPredictor:
         return ' '.join(generated)
 
 def main():
-    pass
-
-if __name__ == "__main__":
     with open("simulation.txt", "r", encoding="utf-8") as f:
         training_texts = f.read()
-    rnn = RNNWordPredictor(hidden_size=32, learning_rate=0.01)
+    rnn = RNNWordPredictor(hidden_size=32, learning_rate=0.05)
 
     print("Building vocabulary...")
     vocab_size = rnn.build_vocab(training_texts)
@@ -205,7 +202,7 @@ if __name__ == "__main__":
     print(f"Training samples: {len(X)}")
 
     print("Training RNN...")
-    losses = rnn.train(X, y, epochs = 20, verbose = True)
+    losses = rnn.train(X, y, epochs = 30, verbose = True)
 
     print("\nTesting predictions:")
     test_contexts = [
@@ -224,3 +221,5 @@ if __name__ == "__main__":
         generated = rnn.generate_text(start, num_words=10, temperature=0.5)
         print(f"Start: {start[0]} -> {generated}")
         
+if __name__ == "__main__":
+    main()
