@@ -77,6 +77,7 @@ class RNNWordPredictor:
             xs[t] = np.zeros((self.vocab_size,1))
             xs[t][inputs[t]] = 1
 
+            # ht = tanh(Whh*ht-1 + Wxh*xt)
             hs[t] = np.tanh(np.dot(self.Wxh, xs[t]) + np.dot(self.Whh, hs[t-1]) + self.bh)
 
             ys[t] = np.dot(self.Why, hs[t]) + self.by
